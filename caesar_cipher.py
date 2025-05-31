@@ -13,7 +13,7 @@ def decrypt(text, shift):
 
 # --- Example Usage ---
 if __name__ == "__main__":
-    print("=== Caesar Cipher App ===")
+    print("=*=*= Caesar Cipher App =*=*=")
     choice = input("Type 'e' to encrypt or 'd' to decrypt: ").lower()
     text = input("Enter your message: ")
     shift = int(input("Enter shift value (e.g. 3): "))
