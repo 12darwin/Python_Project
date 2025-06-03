@@ -1,7 +1,12 @@
 from scapy.all import ARP, Ether, srp
 from reportlab.pdfgen import canvas
 from datetime import datetime
-import os
+import pytz
+import socket
+
+def get_current_time():
+    tz = pytz.timezone("Asia/Manila")
+    return datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
 
 def scan_network(ip_range):
     print(f"[+] Scanning network: {ip_range}")
@@ -13,9 +18,16 @@ def scan_network(ip_range):
     devices = []
 
     for sent, received in result:
+        ip = received.psrc
+        mac = received.hwsrc
+        try:
+            hostname = socket.gethostbyaddr(ip)[0]
+        except socket.herror:
+            hostname = "Unknown"
         devices.append({
-            "ip": received.psrc,
-            "mac": received.hwsrc
+            "ip": ip,
+            "mac": mac,
+            "hostname": hostname
         })
 
     return devices
@@ -23,12 +35,12 @@ def scan_network(ip_range):
 def generate_pdf(devices, filename="network_report.pdf"):
     c = canvas.Canvas(filename)
     c.setFont("Helvetica", 12)
-    c.drawString(100, 800, f"Network Scan Report - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    c.drawString(100, 780, "IP Address".ljust(20) + "MAC Address")
+    c.drawString(100, 800, f"Network Scan Report - {get_current_time()}")
+    c.drawString(100, 780, "IP Address".ljust(20) + "MAC Address".ljust(20) + "Hostname")
 
     y = 760
     for dev in devices:
-        line = f"{dev['ip'].ljust(20)} {dev['mac']}"
+        line = f"{dev['ip'].ljust(20)} {dev['mac'].ljust(20)} {dev['hostname']}"
         c.drawString(100, y, line)
         y -= 20
 
@@ -38,10 +50,10 @@ def generate_pdf(devices, filename="network_report.pdf"):
 def generate_html(devices, filename="network_report.html"):
     with open(filename, "w") as f:
         f.write("<html><head><title>Network Report</title></head><body>")
-        f.write(f"<h2>Network Scan Report - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</h2>")
-        f.write("<table border='1'><tr><th>IP Address</th><th>MAC Address</th></tr>")
+        f.write(f"<h2>Network Scan Report - {get_current_time()}</h2>")
+        f.write("<table border='1'><tr><th>IP Address</th><th>MAC Address</th><th>Hostname</th></tr>")
         for dev in devices:
-            f.write(f"<tr><td>{dev['ip']}</td><td>{dev['mac']}</td></tr>")
+            f.write(f"<tr><td>{dev['ip']}</td><td>{dev['mac']}</td><td>{dev['hostname']}</td></tr>")
         f.write("</table></body></html>")
 
     print(f"[+] HTML report saved as {filename}")
