@@ -12,3 +12,5 @@ Network Scanner - Find Local network Devices, understand protocols, and detect p
 Keylogger - Detect key presses and store locally
 
 File integrity checker - Allows user to check and verify if files has been changed
+
+Hash verifier - Verify if the files has been modified through hash checking
