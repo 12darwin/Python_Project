@@ -8,3 +8,5 @@ Network Scanner - Find Local network Devices, understand protocols, and detect p
 -printed in pdf or html
 -include hostname
 -include date and time of scanned network report
+
+Keylogger - Detect key presses and store locally
