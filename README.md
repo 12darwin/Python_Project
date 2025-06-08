@@ -10,3 +10,5 @@ Network Scanner - Find Local network Devices, understand protocols, and detect p
 -include date and time of scanned network report
 
 Keylogger - Detect key presses and store locally
+
+File integrity checker - Allows user to check and verify if files has been changed
