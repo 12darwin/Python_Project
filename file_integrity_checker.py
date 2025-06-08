@@ -30,8 +30,8 @@ def check_integrity(filepath, hash_file):
         print("⚠️ File has been modified!")
 
 if __name__ == "__main__":
-    file_to_check = "example.txt"
-    hash_txt_file = "example_hash.txt"
+    file_to_check = input("Enter the path to the file you want to check: ")
+    hash_txt_file = file_to_check + "_hash.txt"
 
     choice = input("Do you want to (s)ave hash or (c)heck integrity? [s/c]: ").strip().lower()
     
